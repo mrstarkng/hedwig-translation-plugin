@@ -27,9 +27,11 @@ if st.button("Translate"):
                 )
                 result = res.json()
                 if "translated" in result:
-                    st.success("✅ Translated Text:")
+                    st.success("Translated Text:")
                     st.text_area("Result", result["translated"], height=150)
                 else:
                     st.error("Translation failed.")
             except Exception as e:
                 st.error(f"Error: {e}")
+
+
