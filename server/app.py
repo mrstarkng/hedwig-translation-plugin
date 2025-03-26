@@ -115,5 +115,10 @@ def translate():
 
     return jsonify({"translated_text": final_translation}), 200
 
+@app.route('/', methods=['GET'])
+def home():
+    return "Hello from Flask!", 200
+
+
 if __name__ == '__main__':
     app.run(debug=True)
