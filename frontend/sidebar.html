@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <style>
+        body {
+            font-family: Arial;
+            padding: 10px;
+        }
+
+        select,
+        button,
+        textarea {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>🌐 AI Translate</h3>
+    <label>From:</label>
+    <select id="sourceLang">
+        <option value="vi">Vietnamese</option>
+        <option value="en" selected>English</option>
+    </select>
+
+    <label>To:</label>
+    <select id="targetLang">
+        <option value="en">English</option>
+        <option value="vi" selected>Vietnamese</option>
+    </select>
+
+    <button onclick="translate()">Translate Selected Text</button>
+
+    <div id="result" style="margin-top: 20px;"></div>
+
+    <script>
+        function translate() {
+            document.getElementById("result").innerText = "⏳ Translating...";
+            const from = document.getElementById("sourceLang").value;
+            const to = document.getElementById("targetLang").value;
+
+            google.script.run.withSuccessHandler(function (response) {
+                document.getElementById("result").innerText = response;
+            }).translateSelectedText(from, to);
+        }
+    </script>
+</body>
+
+</html>
