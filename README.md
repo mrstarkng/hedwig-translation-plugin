@@ -43,27 +43,6 @@ Hedwig là một plugin dịch thuật mạnh mẽ tích hợp trí tuệ nhân 
     * `asgiref` (thông qua `Flask[async]`): Hỗ trợ view async trong Flask.
 * **Tunneling (Development):** ngrok (Để expose server Flask local ra internet cho Apps Script gọi).
 
-## Cấu trúc dự án
-
-hedwig-plugin/
-│
-├── backend/                  # Chứa code server Flask
-│   ├── app.py                # File Flask chính (routes, xử lý request)
-│   ├── pdf_utils.py          # Logic tạo PDF (cho chức năng tương lai)
-│   ├── .env                  # File chứa API keys (KHÔNG commit lên Git)
-│   ├── NotoSans-Regular.ttf  # File font (ví dụ)
-│   └── NotoSans-Bold.ttf     # File font (ví dụ)
-│
-├── frontend/                 # Chứa code Apps Script cho Google Docs Add-on
-│   ├── Code.gs               # Logic Apps Script (gọi backend, xử lý UI)
-│   ├── Sidebar.html          # Giao diện HTML của sidebar
-│   └── appsscript.json       # File Manifest cấu hình add-on
-│
-│
-├── .gitignore                # Cấu hình bỏ qua file/thư mục cho Git
-├── README.md                 # File tài liệu chính (file này)
-└── requirements.txt          # Danh sách thư viện Python cho backend
-
 ## Hướng dẫn cài đặt và chạy (Development)
 
 ### Yêu cầu cài đặt
@@ -182,17 +161,23 @@ hedwig-plugin/
 7.  **Xuất PDF:**
     * Nút **`Export PDF`** hiện có sẵn nhưng chức năng này đang trong quá trình phát triển và sẽ được hoàn thiện trong các phiên bản tương lai.
 
-## Vấn đề đã biết / Hạn chế
-
-* Thời gian dịch toàn bộ tài liệu rất dài có thể vượt quá giới hạn thực thi của Google Apps Script (~6 phút), gây lỗi timeout phía Apps Script ngay cả khi backend đã xử lý xong.
-* Chất lượng bản dịch phụ thuộc hoàn toàn vào mô hình Gemini và có thể thay đổi giữa các cặp ngôn ngữ.
-* Phiên bản development yêu cầu chạy song song server Flask và ngrok.
-* Phát hiện ngôn ngữ tự động có thể không chính xác với các đoạn text quá ngắn hoặc chứa nhiều ngôn ngữ lẫn lộn.
-
-## Hướng phát triển tương lai
-
-* Hoàn thiện chức năng "Export PDF".
-* Hỗ trợ thêm các mô hình AI khác (GPT-4, ...).
-* Cải thiện giao diện người dùng và trải nghiệm người dùng.
-* Đóng gói và phát hành lên Google Workspace Marketplace (yêu cầu quy trình review của Google).
-* Phát triển phiên bản cho Microsoft Word / LibreOffice Writer.
+## Cấu trúc dự án
+```plaintext
+hedwig-plugin/
+│
+├── backend/                  # Chứa code server Flask
+│   ├── app.py                # File Flask chính (routes, xử lý request)
+│   ├── pdf_utils.py          # Logic tạo PDF (cho chức năng tương lai)
+│   ├── .env                  # File chứa API keys (KHÔNG commit lên Git)
+│   ├── NotoSans-Regular.ttf  # File font (ví dụ)
+│   └── NotoSans-Bold.ttf     # File font (ví dụ)
+│
+├── frontend/                 # Chứa code Apps Script cho Google Docs Add-on
+│   ├── Code.gs               # Logic Apps Script (gọi backend, xử lý UI)
+│   ├── Sidebar.html          # Giao diện HTML của sidebar
+│   └── appsscript.json       # File Manifest cấu hình add-on
+│
+│
+├── .gitignore                # Cấu hình bỏ qua file/thư mục cho Git
+├── README.md                 # File tài liệu chính (file này)
+└── requirements.txt          # Danh sách thư viện Python cho backend
