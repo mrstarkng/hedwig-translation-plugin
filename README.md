@@ -45,23 +45,22 @@ Hedwig là một plugin dịch thuật mạnh mẽ tích hợp trí tuệ nhân 
 
 ## Cấu trúc dự án
 
-hedwig-plugin/
-│
-├── backend/           # Chứa code server Flask
-│   ├── app.py         # File Flask chính (routes, xử lý request)
-│   ├── pdf_utils.py   # Logic tạo PDF (cho chức năng tương lai)
-│   ├── .env           # File chứa API keys (KHÔNG commit lên Git)
-│   ├── requirements.txt # Danh sách thư viện Python cần cài đặt
-│   └── NotoSans-Regular.ttf  # File font (ví dụ)
-│   └── NotoSans-Bold.ttf     # File font (ví dụ)
-│
-├── frontend/          # Chứa code Apps Script cho Google Docs Add-on
-│   ├── Code.gs        # Logic Apps Script (gọi backend, xử lý UI)
-│   ├── Sidebar.html   # Giao diện HTML của sidebar
-│   └── appsscript.json # File Manifest cấu hình add-on
-│
-└── docs/              # Thư mục chứa tài liệu hướng dẫn
-└── README.md      # File này
+## Cấu trúc dự án (Tham khảo)
+
+* `hedwig-plugin/`
+    * `backend/` - Chứa code server Flask
+        * `app.py` - File Flask chính (routes, xử lý request)
+        * `pdf_utils.py` - Logic tạo PDF (cho chức năng tương lai)
+        * `.env` - File chứa API keys (KHÔNG commit lên Git)
+        * `requirements.txt` - Danh sách thư viện Python cần cài đặt
+        * `NotoSans-Regular.ttf` - File font (ví dụ)
+        * `NotoSans-Bold.ttf` - File font (ví dụ)
+    * `frontend/` - Chứa code Apps Script cho Google Docs Add-on
+        * `Code.gs` - Logic Apps Script (gọi backend, xử lý UI)
+        * `Sidebar.html` - Giao diện HTML của sidebar
+        * `appsscript.json` - File Manifest cấu hình add-on
+    * `docs/` - Thư mục chứa tài liệu hướng dẫn
+        * `README.md` - File tài liệu chính (file này)
 
 ## Hướng dẫn cài đặt và chạy (Development)
 
