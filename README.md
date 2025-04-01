@@ -24,6 +24,7 @@
   - **Copy** translated text to clipboard.
 - **Long Text Handling:** Backend efficiently splits and asynchronously translates long texts, minimizing errors and optimizing performance.
 - **PDF Export (Coming Soon):** Functionality to export documents and translations to PDF is in development.
+  ![UI](demo/ui.png)
 
 ---
 
@@ -109,7 +110,7 @@ ngrok http 5050
 
 ## Demo
 
-![Demo Screenshot 1](demo/demo.gif)
+![Demo Screenshot 1](demo/demo_test.gif)
 
 ---
 
@@ -139,12 +140,7 @@ hedwig-translation-plugin/
 │   ├── app.py
 │   ├── pdf_utils.py
 │   ├── test_translation.py
-│   ├── .env
-│   ├── NotoSans-Bold.ttf
-│   ├── NotoSans-Regular.ttf
-│   ├── NotoSans-Bold.pkl
-│   ├── NotoSans-Regular.pkl
-│   └── NotoSans-Regular.cw127.pkl
+│   └── .env
 │
 ├── .gitignore
 ├── LICENSE
