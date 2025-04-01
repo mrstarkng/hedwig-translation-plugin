@@ -1,6 +1,6 @@
 
 // --- Hằng số API ---
-// !!! QUAN TRỌNG: Thay YOUR_NGROK_URL_HERE bằng URL ngrok hiện tại của bạn !!!
+// !!! QUAN TRỌNG: Thay YOUR_NGROK_URL_HERE bằng URL ngrok hiện tại của bạn 
 const NGROK_BASE_URL = "YOUR_NGROK_URL_HERE"; // ngrok
 const TRANSLATE_API_URL = NGROK_BASE_URL + "/translate";
 const PDF_API_URL = NGROK_BASE_URL + "/export-pdf"; // Endpoint mới cho PDF
