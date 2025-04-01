@@ -1,0 +1,7 @@
+Flask[async]>=2.0.0
+Flask-Cors
+python-dotenv
+requests
+langdetect
+aiohttp
+fpdf2
