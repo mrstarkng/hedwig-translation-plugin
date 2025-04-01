@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-# app.py - Backend Flask cho Plugin Dịch thuật Hedwig
-# Hỗ trợ dịch đa ngôn ngữ (nguồn) sang tiếng Việt (đích mặc định)
-# Sử dụng asyncio và aiohttp để xử lý bất đồng bộ
-# *** Phiên bản đầy đủ với logging chi tiết để debug lỗi Vi->En ***
 import base64 # Để mã hóa sang Base64
 from pdf_utils import create_pdf_from_text # Import hàm từ file mới tạo
 from flask import Flask, request, jsonify
