@@ -2,7 +2,7 @@
 
 **Hedwig** is a powerful AI-powered translation plugin designed to work seamlessly within popular word processing platforms like **Google Docs**. This project enables effortless document translation by leveraging cutting-edge Large Language Models (LLMs) such as **Google’s Gemini**, directly inside your document.
 
-> This project was developed as part of the **Natural Language Processing (NLP)** course.
+> This project was developed as part of the **Natural Language Processing Applications (CSC15008)** course.
 
 ---
 
@@ -27,13 +27,9 @@
 
 ---
 
-## Demo
+## Architecture Diagram
 
-![Demo Screenshot 1](path-to-your-demo-image1.png)
-
-![Demo Screenshot 2](path-to-your-demo-image2.png)
-
----
+![Architecture Diagram](demo/diagram.png)
 
 ## Supported Platforms
 
@@ -93,7 +89,7 @@ ngrok http 5050
 ### Frontend (Google Apps Script)
 
 - Open Google Docs > `Extensions` > `Apps Script`
-- Paste contents of `Code.gs` and `Sidebar.html`
+- Paste contents of `Code.gs`, `Sidebar.html` and `appsscript.json`
 - Update `NGROK_BASE_URL` in `Code.gs` with ngrok URL
 - Configure and save `appsscript.json`
 - Deploy and test from Google Docs
@@ -111,30 +107,57 @@ ngrok http 5050
 
 ---
 
+## Demo
+
+![Demo Screenshot 1](demo/demo.gif)
+
+---
+
 ## Project Structure
 
 ```
-hedwig-plugin/
+hedwig-translation-plugin/
 │
-├── backend/
+├── appsscript/
+│   ├── appsscript.json
+│   ├── Code.gs
+│   └── Sidebar.html
+│
+├── client (experiement)/
+│   ├── app.js
+│   ├── app.py
+│   ├── code.gs
+│   ├── index.html
+│   ├── manifest.xml
+│   └── style.css
+│
+├── demo/
+│   ├── demo.gif
+│   └── diagram.png
+│
+├── server/
 │   ├── app.py
 │   ├── pdf_utils.py
+│   ├── test_translation.py
 │   ├── .env
+│   ├── NotoSans-Bold.ttf
 │   ├── NotoSans-Regular.ttf
-│   └── NotoSans-Bold.ttf
-│
-├── frontend/
-│   ├── Code.gs
-│   ├── Sidebar.html
-│   └── appsscript.json
+│   ├── NotoSans-Bold.pkl
+│   ├── NotoSans-Regular.pkl
+│   └── NotoSans-Regular.cw127.pkl
 │
 ├── .gitignore
+├── LICENSE
 ├── README.md
 └── requirements.txt
 ```
 
 ---
 
-## License
+## Contributing
 
-This project is for academic and personal use. For other use cases, please contact the maintainer.
+This project is open to contributions. Please feel free to submit a PR.
+
+## 📃 License
+
+This project is provided under an MIT license. See the [LICENSE](LICENSE) file for details.
