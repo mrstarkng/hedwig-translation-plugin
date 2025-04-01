@@ -27,7 +27,7 @@
 
 ---
 
-## 🖼️ Demo
+## Demo
 
 ![Demo Screenshot 1](path-to-your-demo-image1.png)
 
@@ -35,14 +35,14 @@
 
 ---
 
-## 🧩 Supported Platforms
+## Supported Platforms
 
 - **Currently:** Google Docs (via Google Apps Script Add-on)
 - **Future Plans:** Microsoft Word, LibreOffice Writer
 
 ---
 
-## 🛠 Technology Stack
+## Technology Stack
 
 - **Frontend:** Google Apps Script (HTML, CSS, JavaScript)
 - **Backend:** Python 3, Flask, aiohttp, asyncio
@@ -53,7 +53,7 @@
 
 ---
 
-## 🚀 Installation & Development
+## Installation & Development
 
 ### Prerequisites
 
@@ -100,7 +100,7 @@ ngrok http 5050
 
 ---
 
-## 🧪 Usage
+## Usage
 
 - Open sidebar via `Extensions > Hedwig > Open Translator`
 - Input text manually or load selected/full document
@@ -111,7 +111,7 @@ ngrok http 5050
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 hedwig-plugin/
@@ -135,6 +135,6 @@ hedwig-plugin/
 
 ---
 
-## 📌 License
+## License
 
 This project is for academic and personal use. For other use cases, please contact the maintainer.
