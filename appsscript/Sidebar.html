@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        /* Giữ nguyên các style tùy chỉnh từ lần trước */
+        body {
+            padding: 15px;
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 13px;
+            color: #202124;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: #5f6368;
+            margin-bottom: 4px;
+        }
+
+        select,
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .button-group {
+            margin-top: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .button-group button {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .result-container {
+            margin-top: 12px;
+            position: relative;
+        }
+
+        #result {
+            min-height: 100px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            padding: 10px 10px 25px 10px;
+            /* Thêm padding dưới cho nút copy */
+            white-space: pre-wrap;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #3c4043;
+        }
+
+        #result.placeholder {
+            color: #5f6368;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #1a73e8;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .copy-button {
+            position: absolute;
+            bottom: 5px;
+            /* Di chuyển xuống dưới */
+            right: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #5f6368;
+            padding: 3px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .copy-button:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+            color: #202124;
+        }
+
+        .copy-button .material-icons {
+            font-size: 18px;
+        }
+
+        .action-buttons-container {
+            /* Container mới cho Translate và Export */
+            display: flex;
+            gap: 10px;
+            /* Khoảng cách giữa các nút */
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .action-buttons-container button {
+            flex-grow: 1;
+            /* Chia sẻ không gian */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .lang-selects {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .lang-selects .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .swap-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #5f6368;
+            padding: 5px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .swap-button:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+            color: #202124;
+        }
+
+        .swap-button .material-icons {
+            font-size: 20px;
+        }
+
+        .loading-overlay {
+            /* Optional: for better loading feedback */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-overlay .spinner {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Spinner lớn hơn */
+    </style>
+</head>
+
+<body>
+    <div id="loadingOverlay" class="loading-overlay hidden" style="display: none !important;">
+        <div class="spinner"></div> Processing...
+    </div>
+
+    <div class="form-group">
+        <label for="inputText">Text to Translate:</label>
+        <textarea id="inputText" placeholder="Type, paste, or load text here..."></textarea>
+        <div class="button-group">
+            <button class="button" onclick="loadSelectedText()"><span class="material-icons">format_quote</span>Load
+                Selected</button>
+            <button class="button" onclick="loadFullDocument()"><span class="material-icons">article</span>Load Full
+                Doc</button>
+        </div>
+    </div>
+
+    <div class="lang-selects form-group">
+        <div class="form-group">
+            <label for="sourceLang">From:</label>
+            <select id="sourceLang">
+                <option value="auto">Auto-detect</option>
+                <option value="en">English</option>
+                <option value="vi">Vietnamese</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="zh">Chinese</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="ru">Russian</option>
+                <option value="hi">Hindi</option>
+                <option value="ar">Arabic</option>
+            </select>
+        </div>
+        <button class="swap-button" onclick="swapLanguages()" title="Swap languages">
+            <span class="material-icons">swap_horiz</span>
+        </button>
+        <div class="form-group">
+            <label for="targetLang">To:</label>
+            <select id="targetLang">
+                <option value="vi" selected>Vietnamese</option>
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="zh">Chinese</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="ru">Russian</option>
+                <option value="hi">Hindi</option>
+                <option value="ar">Arabic</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="model">Translation Engine:</label>
+        <select id="model">
+            <option value="gemini">Gemini</option>
+            <option value="gpt-4" disabled>GPT-4 (coming soon)</option>
+            <option value="specialized">Specialized</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="temperature">Temperature (0.0 to 1.0):</label>
+        <input type="number" id="temperature" min="0" max="1" step="0.1" value="0.7" />
+    </div>
+
+
+
+    <div class="action-buttons-container">
+        <button class="button button-primary translate-btn" onclick="translateText()">
+            <span class="spinner hidden"></span>
+            <span class="button-text">Translate</span>
+        </button>
+        <button id="exportPdfBtn" class="button" onclick="exportPdf()">
+            <span class="material-icons">picture_as_pdf</span> Export PDF
+        </button>
+    </div>
+    <div class="result-container">
+        <label for="result">Translation Result:</label>
+        <div id="result" class="placeholder">Enter text and click Translate...</div>
+        <button id="copyBtn" class="copy-button hidden" onclick="copyResultToClipboard()" title="Copy result">
+            <span class="material-icons">content_copy</span>
+        </button>
+    </div>
+
+
+
+    <script>
+        // Giữ nguyên các biến đã khai báo trước
+        const resultDiv = document.getElementById("result");
+        const translateBtn = document.querySelector("button.translate-btn");
+        const spinner = translateBtn.querySelector(".spinner");
+        const buttonText = translateBtn.querySelector(".button-text");
+        const copyBtn = document.getElementById("copyBtn");
+        const sourceLangSelect = document.getElementById("sourceLang");
+        const targetLangSelect = document.getElementById("targetLang");
+        const inputTextElem = document.getElementById("inputText"); // Thêm biến cho textarea
+        const exportPdfBtn = document.getElementById("exportPdfBtn"); // Thêm biến cho nút PDF
+        const loadingOverlay = document.getElementById("loadingOverlay"); // Overlay chờ
+
+        // Giữ nguyên các hàm: translateText, showTranslationResult, showTranslationError,
+        // loadSelectedText, loadFullDocument, showLoadingInTextarea, copyResultToClipboard,
+        // swapLanguages, DOMContentLoaded listener
+
+        function translateText() {
+            const text = inputTextElem.value;
+            if (!text.trim()) {
+                resultDiv.innerText = "Please enter text to translate.";
+                resultDiv.classList.add("placeholder");
+                copyBtn.classList.add("hidden");
+                return;
+            }
+            const sourceLang = sourceLangSelect.value;
+            const targetLang = targetLangSelect.value;
+            const model = document.getElementById("model").value;
+            const temperature = parseFloat(document.getElementById("temperature").value);
+
+            translateBtn.disabled = true;
+            spinner.classList.remove("hidden");
+            buttonText.innerText = "Translating...";
+            resultDiv.innerText = "⏳ Translating...";
+            resultDiv.classList.add("placeholder");
+            copyBtn.classList.add("hidden");
+
+            google.script.run
+                .withSuccessHandler(showTranslationResult)
+                .withFailureHandler(showTranslationError)
+                .doTranslation(text, sourceLang, targetLang, model, temperature);
+        }
+
+        function showTranslationResult(response) {
+            translateBtn.disabled = false;
+            spinner.classList.add("hidden");
+            buttonText.innerText = "Translate";
+
+            if (response && response.translated_text) {
+                resultDiv.innerText = response.translated_text;
+                resultDiv.classList.remove("placeholder");
+                copyBtn.classList.remove("hidden");
+            } else {
+                let errorMsg = "No translation returned or an unexpected error occurred.";
+                if (response && response.error) { errorMsg = "Error: " + response.error; }
+                else if (response && response.errors_detail) { errorMsg = `Partial success. Errors: ${JSON.stringify(response.errors_detail)}`; } // Sử dụng errors_detail
+                resultDiv.innerText = errorMsg;
+                resultDiv.classList.add("placeholder");
+                copyBtn.classList.add("hidden");
+            }
+        }
+
+        function showTranslationError(err) {
+            translateBtn.disabled = false;
+            spinner.classList.add("hidden");
+            buttonText.innerText = "Translate";
+            resultDiv.innerText = "Error calling backend: " + err.message;
+            resultDiv.classList.add("placeholder");
+            copyBtn.classList.add("hidden");
+            console.error("Translation Error (Apps Script):", err);
+        }
+
+        function loadSelectedText() { /* Giữ nguyên */
+            showLoadingInTextarea(true, 'Loading selected text...');
+            google.script.run.withSuccessHandler(function (text) {
+                inputTextElem.value = text || '';
+                showLoadingInTextarea(false);
+            }).withFailureHandler(function (err) {
+                console.error("Error loading selected text:", err);
+                showLoadingInTextarea(false, 'Failed to load selected text.');
+            }).getSelectedText();
+        }
+
+        function loadFullDocument() { /* Giữ nguyên */
+            showLoadingInTextarea(true, 'Loading full document...');
+            google.script.run.withSuccessHandler(function (text) {
+                inputTextElem.value = text || '';
+                showLoadingInTextarea(false);
+            }).withFailureHandler(function (err) {
+                console.error("Error loading full document:", err);
+                showLoadingInTextarea(false, 'Failed to load document text.');
+            }).getFullDocumentText();
+        }
+
+        function showLoadingInTextarea(isLoading, message = '') { /* Giữ nguyên */
+            const textarea = inputTextElem;
+            if (isLoading) {
+                textarea.disabled = true;
+                textarea.placeholder = message;
+                textarea.value = '';
+            } else {
+                textarea.disabled = false;
+                textarea.placeholder = message || "Type, paste, or load text here...";
+            }
+        }
+
+        function copyResultToClipboard() { /* Giữ nguyên */
+            const textToCopy = resultDiv.innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const icon = copyBtn.querySelector('.material-icons');
+                icon.innerText = 'done';
+                setTimeout(() => { icon.innerText = 'content_copy'; }, 1500);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        function swapLanguages() { /* Giữ nguyên */
+            const sourceValue = sourceLangSelect.value;
+            const targetValue = targetLangSelect.value;
+            if (sourceValue !== 'auto') {
+                sourceLangSelect.value = targetValue;
+                targetLangSelect.value = sourceValue;
+            } else {
+                sourceLangSelect.value = targetValue;
+            }
+        }
+
+        // *** Hàm mới để xử lý xuất PDF ***
+        function exportPdf() {
+            const originalText = inputTextElem.value;
+            const translatedText = resultDiv.innerText;
+
+            // Kiểm tra xem có nội dung dịch hợp lệ không
+            if (resultDiv.classList.contains("placeholder") || !translatedText.trim() || translatedText.startsWith("Error:")) {
+                alert("Please generate a valid translation before exporting to PDF.");
+                return;
+            }
+            if (!originalText.trim()) {
+                alert("Original text is empty. Cannot export PDF.");
+                return;
+            }
+
+
+            // Hiển thị trạng thái chờ
+            exportPdfBtn.disabled = true;
+            exportPdfBtn.querySelector('.material-icons').innerText = 'hourglass_top'; // Đổi icon chờ
+            loadingOverlay.classList.remove('hidden'); // Hiển thị overlay chờ
+
+            // Gọi hàm exportToPdf trong Code.gs (sẽ tạo ở Giai đoạn 2)
+            google.script.run
+                .withSuccessHandler(handlePdfResponse)
+                .withFailureHandler(handlePdfError)
+                .exportToPdf(originalText, translatedText); // Hàm mới trong Code.gs
+        }
+
+        // *** Hàm mới để xử lý kết quả PDF thành công ***
+        // *** Hàm xử lý kết quả PDF thành công - Đã sửa ***
+        function handlePdfResponse(response) {
+            // Tắt trạng thái chờ
+            exportPdfBtn.disabled = false;
+            exportPdfBtn.querySelector('.material-icons').innerText = 'picture_as_pdf'; // Reset icon
+            loadingOverlay.classList.add('hidden'); // Ẩn overlay chờ
+
+            if (response && response.pdf_base64 && response.filename) {
+                try {
+                    // *** Gọi hàm Apps Script mới để hiển thị dialog ***
+                    google.script.run
+                        .withFailureHandler(function (err) { // Thêm handler lỗi cho việc hiển thị dialog
+                            console.error("Error calling displayPdfDialog:", err);
+                            alert("Failed to display PDF dialog: " + err.message);
+                        })
+                        .displayPdfDialog(response.pdf_base64, response.filename); // Hàm mới trong Code.gs
+
+                } catch (e) {
+                    // Lỗi này ít khi xảy ra nếu google.script.run được gọi đúng
+                    console.error("Error initiating PDF dialog display: ", e);
+                    alert("Failed to initiate PDF dialog display. Please check console.");
+                }
+            } else {
+                // Xử lý trường hợp backend trả về nhưng không có data PDF
+                let errorMsg = "Failed to generate PDF. Backend did not return valid PDF data.";
+                if (response && response.error) { errorMsg += "\nDetails: " + response.error; }
+                else if (response && response.errors_detail) { errorMsg += `\nPartial success. Errors: ${JSON.stringify(response.errors_detail)}`; }
+                console.error("PDF Export Error (Received from Backend):", response);
+                alert(errorMsg);
+            }
+        }
+        // *** Hàm mới để xử lý lỗi khi xuất PDF ***
+        function handlePdfError(error) {
+            // Tắt trạng thái chờ
+            exportPdfBtn.disabled = false;
+            exportPdfBtn.querySelector('.material-icons').innerText = 'picture_as_pdf'; // Reset icon
+            loadingOverlay.classList.add('hidden'); // Ẩn overlay chờ
+
+            console.error("PDF Export Error (Apps Script):", error);
+            alert("Error exporting PDF: " + error.message);
+        }
+
+
+        document.addEventListener('DOMContentLoaded', (event) => { /* Giữ nguyên */
+            if (!resultDiv.innerText || resultDiv.innerText === "⏳ Waiting for input...") {
+                resultDiv.innerText = "Enter text and click Translate...";
+                resultDiv.classList.add("placeholder");
+                copyBtn.classList.add("hidden");
+            } else if (resultDiv.innerText.trim() !== "") {
+                copyBtn.classList.remove("hidden");
+            }
+        });
+
+    </script>
+</body>
+
+</html>

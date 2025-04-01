@@ -1,0 +1,29 @@
+{
+  "timeZone": "Asia/Ho_Chi_Minh",
+  "dependencies": {},
+  "exceptionLogging": "STACKDRIVER",
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/documents",
+    "https://www.googleapis.com/auth/script.container.ui",
+    "https://www.googleapis.com/auth/script.external_request"
+  ],
+  "urlFetchWhitelist": [
+    "(paste your ngrok link here)/"
+  ],
+  "runtimeVersion": "V8",
+  "addOns": {
+    "common": {
+      "name": "Hedwig",
+      "logoUrl": "https://example.com/logo.png",
+      "useLocaleFromApp": true,
+      "homepageTrigger": {
+        "runFunction": "showSidebar"
+      }
+    },
+    "docs": {
+      "homepageTrigger": {
+        "runFunction": "showSidebar"
+      }
+    }
+  }
+}
