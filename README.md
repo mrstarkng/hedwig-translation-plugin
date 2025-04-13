@@ -28,6 +28,7 @@
   ![UI](demo/ui_doc.png)
 
   ![UI](demo/ui_word.png)
+
 ---
 
 ## Architecture Diagram
@@ -107,12 +108,6 @@ npm start
 
 - Trust the SSL certificate if prompted
 - Word will open and sideload the add-in automatically
-
----
-
-## Demo
-
-![Demo Screenshot 1](demo/demo_test.gif)
 
 ---
 
