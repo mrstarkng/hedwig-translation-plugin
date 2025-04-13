@@ -108,7 +108,19 @@ npm start
 
 - Trust the SSL certificate if prompted
 - Word will open and sideload the add-in automatically
+> **📌 Note:** If you encounter the error `Error: listen EADDRINUSE: address already in use :::3000`, this means port 3000 is currently occupied. You can resolve it with:
 
+#### ✅ Solution: Kill the process occupying port 3000
+
+```bash
+lsof -ti:3000 | xargs kill -9
+```
+
+Then restart the server:
+
+```bash
+npm start
+```
 ---
 
 ## Project Structure
