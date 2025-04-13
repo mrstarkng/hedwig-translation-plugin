@@ -1,6 +1,6 @@
 # Hedwig Translation Plugin
 
-**Hedwig** is a powerful AI-powered translation plugin designed to work seamlessly within popular word processing platforms like **Google Docs**. This project enables effortless document translation by leveraging cutting-edge Large Language Models (LLMs) such as **Google’s Gemini**, directly inside your document.
+**Hedwig** is a powerful AI-powered translation plugin designed to work seamlessly within popular word processing platforms like **Google Docs** and **Microsoft Word**. This project enables effortless document translation by leveraging cutting-edge Large Language Models (LLMs) such as **Google’s Gemini**, directly inside your document.
 
 > This project was developed as part of the **Natural Language Processing Applications (CSC15008)** course.
 
@@ -17,15 +17,17 @@
   - Currently uses **Gemini** as the primary translation engine.
   - Placeholder for integrating other models like GPT-4 in the future.
 - **Temperature Control:** Adjust the `temperature` parameter to manage translation creativity and accuracy.
-- **Sidebar UI:** User-friendly integration directly into Google Docs sidebar.
+- **Sidebar UI:** User-friendly integration directly into Google Docs and Microsoft Word sidebar.
 - **Utilities:**
   - **Load Selected Text** and **Load Full Document** for quick input.
   - **Swap Languages** quickly switches the translation direction.
   - **Copy** translated text to clipboard.
 - **Long Text Handling:** Backend efficiently splits and asynchronously translates long texts, minimizing errors and optimizing performance.
 - **PDF Export (Coming Soon):** Functionality to export documents and translations to PDF is in development.
-  ![UI](demo/ui.png)
 
+  ![UI](demo/ui_doc.png)
+
+  ![UI](demo/ui_word.png)
 ---
 
 ## Architecture Diagram
@@ -34,14 +36,18 @@
 
 ## Supported Platforms
 
-- **Currently:** Google Docs (via Google Apps Script Add-on)
-- **Future Plans:** Microsoft Word, LibreOffice Writer
+- **Currently:**
+  - Google Docs (via Google Apps Script Add-on)
+  - Microsoft Word (via Office Add-in built with Webpack and Flask backend)
+- **Future Plans:** LibreOffice Writer
 
 ---
 
 ## Technology Stack
 
-- **Frontend:** Google Apps Script (HTML, CSS, JavaScript)
+- **Frontend:**
+  - Google Docs: Google Apps Script (HTML, CSS, JavaScript)
+  - Microsoft Word: Office.js + Webpack + JQuery
 - **Backend:** Python 3, Flask, aiohttp, asyncio
 - **Translation API:** Google Gemini API
 - **Backend Libraries:**
@@ -56,55 +62,51 @@
 
 - Google Account
 - Python 3.8+ and pip
+- Node.js and npm (for Word Add-in)
 - ngrok CLI
 - Google Cloud with Gemini API enabled
 
-### Backend Setup
+### Backend Setup (Shared)
 
 ```bash
 git clone <your-repo-url>
-cd hedwig-plugin/backend
+cd hedwig-translation-plugin
 
 # Setup virtual environment
 python -m venv venv
-# Windows
-.\venv\Scripts\activate
-# macOS/Linux
-source venv/bin/activate
+source venv/bin/activate  # Windows: .\venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
 
 # Run backend
-python app.py
+python server/app.py
 ```
 
 ### ngrok Setup
 
 ```bash
-# Open new terminal window
 ngrok http 5050
-# Copy the HTTPS URL provided
+# Copy the HTTPS URL and update frontend configs
 ```
 
-### Frontend (Google Apps Script)
+### Google Docs Add-in Setup
 
 - Open Google Docs > `Extensions` > `Apps Script`
-- Paste contents of `Code.gs`, `Sidebar.html` and `appsscript.json`
-- Update `NGROK_BASE_URL` in `Code.gs` with ngrok URL
-- Configure and save `appsscript.json`
-- Deploy and test from Google Docs
+- Paste contents of `appsscript/Code.gs`, `Sidebar.html`, and `appsscript.json`
+- Update `NGROK_BASE_URL` in `Code.gs`
+- Deploy and test directly inside Google Docs
 
----
+### Microsoft Word Add-in Setup
 
-## Usage
+```bash
+cd hedwig-word
+npm install
+npm start
+```
 
-- Open sidebar via `Extensions > Hedwig > Open Translator`
-- Input text manually or load selected/full document
-- Select languages (`Auto-detect` for source if unsure)
-- Adjust advanced settings (engine, temperature)
-- Click **Translate** and view result
-- Use **Copy** and **Paste** for convenient editing
+- Trust the SSL certificate if prompted
+- Word will open and sideload the add-in automatically
 
 ---
 
@@ -124,17 +126,21 @@ hedwig-translation-plugin/
 │   ├── Code.gs
 │   └── Sidebar.html
 │
-├── client (experiement)/
-│   ├── app.js
-│   ├── app.py
-│   ├── code.gs
-│   ├── index.html
+├── hedwig-word/
 │   ├── manifest.xml
-│   └── style.css
+│   ├── package.json
+│   ├── webpack.config.js
+│   ├── .eslintrc.json
+│   ├── babel.config.json
+│   ├── src/
+│   │   ├── taskpane/
+│   │   ├── commands/
+│   │   ├── config/
+│   │   ├── constants/
+│   │   └── utils/
+│   └── assets/
 │
 ├── demo/
-│   ├── demo.gif
-│   └── diagram.png
 │
 ├── server/
 │   ├── app.py
