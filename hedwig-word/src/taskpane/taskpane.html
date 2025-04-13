@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hedwig Translator</title>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet" />
+    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <section id="app-load">
+        <div>Loading</div>
+    </section>
+
+    <main id="app-body">
+        <section class="translator">
+            <div class="languages">
+                <select title="Source language" id="source-lang"></select>
+                <button type="button" id="swap-btn">
+                    <img src="/assets/switch-icon.png" alt="Swap" />
+                </button>
+                <select title="Target language" id="target-lang"></select>
+            </div>
+
+            <div class="translation">
+                <textarea id="source" placeholder="Select text from document to translate"></textarea>
+                <!-- Nút Load toàn bộ văn bản -->
+                <button id="load-full-btn">📄 Load toàn bộ văn bản</button>
+                <textarea id="target" placeholder="Translation" readonly></textarea>
+            </div>
+        </section>
+
+        <section class="settings">
+            <select title="Model name" id="model-name">
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+            </select>
+            <input title="Temperature" id="temperature" placeholder="Temperature" type="number" min="0" max="1"
+                step="0.1" />
+        </section>
+    </main>
+
+    <script src="taskpane.js"></script>
+</body>
+
+</html>
