@@ -107,12 +107,33 @@ body {
     flex-direction: column;
     gap: 14px;
     width: 100%;
+    flex-grow: 1;
 }
 
 .translation textarea {
     width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    box-sizing: border-box;
+}
+
+/* Source input box giữ nguyên chiều cao cố định */
+#source {
     min-height: 100px;
     max-height: 200px;
+    resize: vertical;
+}
+
+/* Target box co dãn hết khung còn lại */
+#target {
+    width: 100%;
+    min-height: 100px;
+    max-height: 70vh;
+    /* Cho phép mở rộng tới 70% chiều cao taskpane */
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -121,9 +142,8 @@ body {
     font-size: 14px;
     line-height: 1.4;
     box-sizing: border-box;
-}
-
-.translation textarea[readonly] {
+    overflow-y: auto;
+    /* Vẫn giữ scroll khi vượt quá max-height */
     background-color: #f7f7f7;
     color: #555;
 }
@@ -152,11 +172,11 @@ body {
 #load-full-btn {
     padding: 6px 12px;
     font-size: 13px;
-    border: 1px solid #2684ff;
+    border: 1px solid #ccc;
     background-color: #fff;
     border-radius: 6px;
     cursor: pointer;
-    color: #2684ff;
+    color: #555;
     transition: background 0.2s ease;
     width: fit-content;
     align-self: flex-start;

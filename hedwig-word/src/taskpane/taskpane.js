@@ -60,6 +60,7 @@ async function onStateUpdated() {
 
     const translation = await translate(stateManager.state);
     $("#target").val(translation);
+    autoExpandTextarea(document.getElementById("target")); 
   }
 }
 
@@ -96,7 +97,6 @@ async function onSelectText() {
     stateManager.setState({ ...stateManager.state, text: range.text.trim() });
   });
 }
-
 async function loadFullDocumentText() {
   try {
     await Word.run(async (context) => {
@@ -109,11 +109,19 @@ async function loadFullDocumentText() {
 
       $("#source").val(fullText);
       stateManager.setState({ ...stateManager.state, text: fullText });
+
+      // Dịch ngay sau khi load
+      const translation = await translate(stateManager.state);
+      $("#target").val(translation);
+
+      // Tự động co giãn textarea
+      autoExpandTextarea(document.getElementById("target"));
     });
   } catch (err) {
     console.error("❌ Failed to load full document text:", err);
   }
 }
+
 
 async function translate(state) {
   return new Promise((resolve) => {
@@ -149,6 +157,14 @@ function createOptionElm(value, selected = false) {
   option.selected = selected;
   return option;
 }
+
+function autoExpandTextarea(textarea) {
+  textarea.style.height = "auto"; // Reset height
+  const maxHeight = window.innerHeight * 0.7; // 70% chiều cao màn hình
+  const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+  textarea.style.height = newHeight + "px";
+}
+
 
 function mapLangToCode(lang) {
   const map = {
