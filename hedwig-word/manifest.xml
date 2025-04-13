@@ -4,10 +4,10 @@
            xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
            xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
            xsi:type="TaskPaneApp">
-  <Id>fd22ea37-3a04-409b-915a-49e7e449c72a</Id>
+  <Id>c4816e15-337d-4428-a1af-576a741b3aee</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>Hedwig Team</ProviderName>
-  <DefaultLocale>en-US</DefaultLocale>
+  <DefaultLocale>vn-VN</DefaultLocale>
   <DisplayName DefaultValue="Hedwig Translator"/>
   <Description DefaultValue="Document Translator plugin using Gemini 2.0 API"/>
   <IconUrl DefaultValue="https://localhost:3000/assets/logo-filled.png"/>
